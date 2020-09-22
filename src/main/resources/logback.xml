@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+<property name="pattern" value="%date{HH:mm:ss.SSS} %-5p %logger{36} 
+%X{akkaSource} [%file:%line] - %m%n" />
+
+<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+        <pattern>%date{HH:mm:ss.SSS} %-5p %logger{36} %X{akkaSource} [%file:%line] - %m%n</pattern>
+    </encoder>
+</appender>
+
+<appender name="business" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>logs/business.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <fileNamePattern>logs/business-%d{yyyy-MM-dd_HH}.log</fileNamePattern>
+        <maxHistory>360</maxHistory>
+    </rollingPolicy>
+    <encoder>
+        <pattern>${pattern}</pattern>
+    </encoder>
+</appender>
+
+<appender name="service" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>logs/service.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <fileNamePattern>/logs/service-%d{yyyy-MM-dd_HH}.log</fileNamePattern>
+        <maxHistory>360</maxHistory>
+    </rollingPolicy>
+    <encoder>
+        <pattern>${pattern}</pattern>
+    </encoder>
+</appender>
+
+<logger name="com.demo.business" level="TRACE" additivity="true">
+    <appender-ref ref="business"/>
+</logger>
+
+<logger name="com.demo.service" level="DEBUG" additivity="true">
+    <appender-ref ref="service"/>
+</logger>
+
+<root>
+    <level value="INFO" />
+    <appender-ref ref="STDOUT" />
+</root>
+</configuration>
